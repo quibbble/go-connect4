@@ -4,6 +4,8 @@ Go-connect4 is a [Go](https://golang.org) implementation of the board game [Conn
 
 Check out [quibbble.com](https://quibbble.com/connect4) if you wish to view and play a live version of this game which utilizes this project along with a separate custom UI.
 
+[![Quibbble Connect4](https://i.imgur.com/Oab1Fm7.png)](https://quibbble.com/connect4)
+
 ## Usage
 
 To play a game create a new Connect4 instance:

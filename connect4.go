@@ -61,8 +61,14 @@ func (c *Connect4) Do(action bg.BoardGameAction) error {
 	return nil
 }
 
-func (c *Connect4) GetSnapshot(team string) (bg.BoardGameSnapshot, error) {
-	return bg.BoardGameSnapshot{
+func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
+	if len(team) > 1 {
+		return nil, &bgerr.Error{
+			Err:    fmt.Errorf("get snapshot requires zero or one team"),
+			Status: bgerr.StatusTooManyTeams,
+		}
+	}
+	return &bg.BoardGameSnapshot{
 		Turn:    c.state.turn,
 		Teams:   c.state.teams,
 		Winners: c.state.winners,

@@ -67,7 +67,7 @@ func (c *Connect4) GetSnapshot(team string) (bg.BoardGameSnapshot, error) {
 		Teams:   c.state.teams,
 		Winners: c.state.winners,
 		MoreData: Connect4SnapshotDetails{
-			Board: c.state.board,
+			Board: c.state.board.board,
 		},
 		Actions: c.actions,
 	}, nil

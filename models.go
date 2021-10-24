@@ -13,5 +13,5 @@ type PlaceDiskActionDetails struct {
 
 // Connect4SnapshotDetails are the details unique to connect4
 type Connect4SnapshotDetails struct {
-	Board *board
+	Board [][]*string
 }

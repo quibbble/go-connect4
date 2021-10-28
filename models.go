@@ -2,8 +2,7 @@ package go_connect4
 
 // Action types
 const (
-	PlaceDisk = "PlaceDisk"
-	Reset     = "Reset"
+	ActionPlaceDisk = "PlaceDisk"
 )
 
 // PlaceDiskActionDetails is the action details for placing a disk in the desired column of the board

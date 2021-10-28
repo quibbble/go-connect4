@@ -24,7 +24,7 @@ func Test_Connect4(t *testing.T) {
 	// place disk in column 0
 	err = connect4.Do(bg.BoardGameAction{
 		Team:       TeamA,
-		ActionType: PlaceDisk,
+		ActionType: ActionPlaceDisk,
 		MoreDetails: PlaceDiskActionDetails{
 			Column: 0,
 		},

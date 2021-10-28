@@ -37,7 +37,7 @@ func NewConnect4(options bg.BoardGameOptions) (*Connect4, error) {
 
 func (c *Connect4) Do(action bg.BoardGameAction) error {
 	switch action.ActionType {
-	case PlaceDisk:
+	case ActionPlaceDisk:
 		var details PlaceDiskActionDetails
 		if err := mapstructure.Decode(action.MoreDetails, &details); err != nil {
 			return &bgerr.Error{
@@ -49,9 +49,25 @@ func (c *Connect4) Do(action bg.BoardGameAction) error {
 			return err
 		}
 		c.actions = append(c.actions, &action)
-	case Reset:
+	case bg.ActionReset:
 		c.state = newState(c.state.teams)
 		c.actions = make([]*bg.BoardGameAction, 0)
+	case bg.ActionUndo:
+		if len(c.actions) > 0 {
+			undo, _ := NewConnect4(bg.BoardGameOptions{Teams: c.state.teams})
+			for _, a := range c.actions[:len(c.actions)-1] {
+				if err := undo.Do(*a); err != nil {
+					return err
+				}
+			}
+			c.state = undo.state
+			c.actions = undo.actions
+		} else {
+			return &bgerr.Error{
+				Err:    fmt.Errorf("no actions to undo"),
+				Status: bgerr.StatusInvalidAction,
+			}
+		}
 	default:
 		return &bgerr.Error{
 			Err:    fmt.Errorf("cannot process action type %s", action.ActionType),
@@ -77,4 +93,8 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 		},
 		Actions: c.actions,
 	}, nil
+}
+
+func (c *Connect4) GetSeed() int64 {
+	return 0
 }

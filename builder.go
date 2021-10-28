@@ -8,7 +8,7 @@ const key = "connect4"
 
 type Builder struct{}
 
-func (b *Builder) Create(options bg.BoardGameOptions) (bg.BoardGame, error) {
+func (b *Builder) Create(options bg.BoardGameOptions, seed ...int64) (bg.BoardGame, error) {
 	return NewConnect4(options)
 }
 

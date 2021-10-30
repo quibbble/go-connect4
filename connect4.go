@@ -84,6 +84,10 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 			Status: bgerr.StatusTooManyTeams,
 		}
 	}
+	var targets []*bg.BoardGameAction
+	if len(c.state.winners) == 0 && (len(team) == 0 || (len(team) == 1 && team[0] == c.state.turn)) {
+		targets = c.state.targets()
+	}
 	return &bg.BoardGameSnapshot{
 		Turn:    c.state.turn,
 		Teams:   c.state.teams,
@@ -91,6 +95,7 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 		MoreData: Connect4SnapshotDetails{
 			Board: c.state.board.board,
 		},
+		Targets: targets,
 		Actions: c.actions,
 	}, nil
 }

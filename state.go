@@ -2,6 +2,7 @@ package go_connect4
 
 import (
 	"fmt"
+	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
 	"math/rand"
 )
@@ -115,4 +116,20 @@ func findWinner(board *board) *string {
 		}
 	}
 	return nil
+}
+
+func (s *state) targets() []*bg.BoardGameAction {
+	targets := make([]*bg.BoardGameAction, 0)
+	for col := 0; col < columns; col++ {
+		if s.board.board[0][col] == nil {
+			targets = append(targets, &bg.BoardGameAction{
+				Team:       s.turn,
+				ActionType: ActionPlaceDisk,
+				MoreDetails: PlaceDiskActionDetails{
+					Column: col,
+				},
+			})
+		}
+	}
+	return targets
 }

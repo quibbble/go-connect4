@@ -14,9 +14,9 @@ type state struct {
 	board   *board
 }
 
-func newState(teams []string) *state {
+func newState(teams []string, random *rand.Rand) *state {
 	return &state{
-		turn:    teams[rand.Intn(len(teams))],
+		turn:    teams[random.Intn(len(teams))],
 		teams:   teams,
 		winners: make([]string, 0),
 		board:   newBoard(),

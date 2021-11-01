@@ -10,14 +10,16 @@ Check out [quibbble.com](https://quibbble.com/connect4) if you wish to view and 
 
 To play a game create a new Connect4 instance:
 ```go
-game, err := NewConnect4(bg.BoardGameOptions{
-    Teams: []string{"TeamA", "TeamB"} // must contain at least 2 and at most 3 teams
+builder := Builder{}
+game, err := builder.Create(&bg.BoardGameOptions{
+    Teams: []string{"TeamA", "TeamB"}, // must contain at least 2 and at most 3 teams
+    Seed: 123,                         // seed used to generate deterministic randomness
 })
 ```
 
 To place a disk do the following action:
 ```go
-err := game.Do(bg.BoardGameAction{
+err := game.Do(&bg.BoardGameAction{
     Team: "TeamA",
     ActionType: "PlaceDisk",
     MoreDetails: PlaceDiskActionDetails{

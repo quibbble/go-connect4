@@ -4,6 +4,7 @@ import (
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 const (
@@ -12,8 +13,9 @@ const (
 )
 
 func Test_Connect4(t *testing.T) {
-	connect4, err := NewConnect4(bg.BoardGameOptions{
+	connect4, err := NewConnect4(&bg.BoardGameOptions{
 		Teams: []string{TeamA, TeamB},
+		Seed:  time.Now().UnixNano(),
 	})
 	if err != nil {
 		t.Error(err)
@@ -22,7 +24,7 @@ func Test_Connect4(t *testing.T) {
 	connect4.state.turn = TeamA
 
 	// place disk in column 0
-	err = connect4.Do(bg.BoardGameAction{
+	err = connect4.Do(&bg.BoardGameAction{
 		Team:       TeamA,
 		ActionType: ActionPlaceDisk,
 		MoreDetails: PlaceDiskActionDetails{

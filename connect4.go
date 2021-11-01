@@ -5,6 +5,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
+	"math/rand"
 )
 
 const (
@@ -15,9 +16,10 @@ const (
 type Connect4 struct {
 	state   *state
 	actions []*bg.BoardGameAction
+	seed    int64
 }
 
-func NewConnect4(options bg.BoardGameOptions) (*Connect4, error) {
+func NewConnect4(options *bg.BoardGameOptions) (*Connect4, error) {
 	if len(options.Teams) < minTeams {
 		return nil, &bgerr.Error{
 			Err:    fmt.Errorf("at least %d teams required to create a game of %s", minTeams, key),
@@ -30,12 +32,13 @@ func NewConnect4(options bg.BoardGameOptions) (*Connect4, error) {
 		}
 	}
 	return &Connect4{
-		state:   newState(options.Teams),
+		state:   newState(options.Teams, rand.New(rand.NewSource(options.Seed))),
 		actions: make([]*bg.BoardGameAction, 0),
+		seed:    options.Seed,
 	}, nil
 }
 
-func (c *Connect4) Do(action bg.BoardGameAction) error {
+func (c *Connect4) Do(action *bg.BoardGameAction) error {
 	switch action.ActionType {
 	case ActionPlaceDisk:
 		var details PlaceDiskActionDetails
@@ -48,15 +51,15 @@ func (c *Connect4) Do(action bg.BoardGameAction) error {
 		if err := c.state.PlaceDisk(action.Team, details.Column); err != nil {
 			return err
 		}
-		c.actions = append(c.actions, &action)
+		c.actions = append(c.actions, action)
 	case bg.ActionReset:
-		c.state = newState(c.state.teams)
+		c.state = newState(c.state.teams, rand.New(rand.NewSource(c.seed)))
 		c.actions = make([]*bg.BoardGameAction, 0)
 	case bg.ActionUndo:
 		if len(c.actions) > 0 {
-			undo, _ := NewConnect4(bg.BoardGameOptions{Teams: c.state.teams})
+			undo, _ := NewConnect4(&bg.BoardGameOptions{Teams: c.state.teams, Seed: c.seed})
 			for _, a := range c.actions[:len(c.actions)-1] {
-				if err := undo.Do(*a); err != nil {
+				if err := undo.Do(a); err != nil {
 					return err
 				}
 			}
@@ -100,6 +103,20 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 	}, nil
 }
 
-func (c *Connect4) GetSeed() int64 {
-	return 0
+func (c *Connect4) GetNotation() string {
+	// extra colon is left for MoreOptions which may be utilized in future additions
+	notation := fmt.Sprintf("%d:%d::", len(c.state.teams), c.seed)
+	for _, action := range c.actions {
+		base := fmt.Sprintf("%d,%d", indexOf(c.state.teams, action.Team), notationActionToInt[action.ActionType])
+		switch action.ActionType {
+		case ActionPlaceDisk:
+			var details PlaceDiskActionDetails
+			_ = mapstructure.Decode(action.MoreDetails, &details)
+			base = fmt.Sprintf("%s,%s;", base, details.encode())
+		default:
+			base = fmt.Sprintf("%s;", base)
+		}
+		notation += base
+	}
+	return notation
 }

@@ -6,19 +6,20 @@ import (
 	"strconv"
 )
 
-// Notation - "'number of teams':'seed':'MoreOptions':'team index','action type number','details','details';..."
-
 var (
-	notationActionToInt = map[string]int{ActionPlaceDisk: 0}
-	notationIntToAction = map[string]string{"0": ActionPlaceDisk}
+	actionToNotation = map[string]string{ActionPlaceDisk: "p"}
+	notationToAction = reverseMap(actionToNotation)
 )
 
-func (p *PlaceDiskActionDetails) encode() string {
-	return fmt.Sprintf("%d", p.Column)
+func (p *PlaceDiskActionDetails) encode() []string {
+	return []string{strconv.Itoa(p.Column)}
 }
 
-func decodeNotationPlaceDiskActionDetails(notation string) (*PlaceDiskActionDetails, error) {
-	column, err := strconv.Atoi(notation)
+func decodePlaceDiskActionDetails(notation []string) (*PlaceDiskActionDetails, error) {
+	if len(notation) != 1 {
+		return nil, loadFailure(fmt.Errorf("invalid place disk notation"))
+	}
+	column, err := strconv.Atoi(notation[0])
 	if err != nil {
 		return nil, loadFailure(err)
 	}

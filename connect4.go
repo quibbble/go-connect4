@@ -119,7 +119,8 @@ func (c *Connect4) GetBGN() *bgn.Game {
 		}
 		switch action.ActionType {
 		case ActionPlaceDisk:
-			details := action.MoreDetails.(PlaceDiskActionDetails)
+			var details PlaceDiskActionDetails
+			_ = mapstructure.Decode(action.MoreDetails, &details)
 			bgnAction.Details = details.encode()
 		}
 		actions = append(actions, bgnAction)

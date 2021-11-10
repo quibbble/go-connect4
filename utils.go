@@ -16,3 +16,12 @@ func reverseMap(m map[string]string) map[string]string {
 	}
 	return n
 }
+
+func contains(items []string, item string) bool {
+	for _, it := range items {
+		if it == item {
+			return true
+		}
+	}
+	return false
+}

@@ -2,12 +2,13 @@ package go_connect4
 
 import (
 	"fmt"
+	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
 	"strconv"
 )
 
 var (
-	actionToNotation = map[string]string{ActionPlaceDisk: "p"}
+	actionToNotation = map[string]string{ActionPlaceDisk: "p", bg.ActionSetWinners: "w"}
 	notationToAction = reverseMap(actionToNotation)
 )
 
@@ -31,6 +32,6 @@ func decodePlaceDiskActionDetails(notation []string) (*PlaceDiskActionDetails, e
 func loadFailure(err error) error {
 	return &bgerr.Error{
 		Err:    err,
-		Status: bgerr.StatusGameLoadFailure,
+		Status: bgerr.StatusBGNDecodingFailure,
 	}
 }

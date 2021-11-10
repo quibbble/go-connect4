@@ -65,6 +65,19 @@ func (s *state) PlaceDisk(team string, column int) error {
 	return nil
 }
 
+func (s *state) SetWinners(winners []string) error {
+	for _, winner := range winners {
+		if !contains(s.teams, winner) {
+			return &bgerr.Error{
+				Err:    fmt.Errorf("winner not in teams"),
+				Status: bgerr.StatusInvalidActionDetails,
+			}
+		}
+	}
+	s.winners = winners
+	return nil
+}
+
 // nil if no winner, winner name if winner
 func findWinner(board *board) *string {
 	// check vertical

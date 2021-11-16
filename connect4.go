@@ -41,6 +41,12 @@ func NewConnect4(options *bg.BoardGameOptions) (*Connect4, error) {
 }
 
 func (c *Connect4) Do(action *bg.BoardGameAction) error {
+	if len(c.state.winners) > 0 {
+		return &bgerr.Error{
+			Err:    fmt.Errorf("game already over"),
+			Status: bgerr.StatusGameOver,
+		}
+	}
 	switch action.ActionType {
 	case ActionPlaceDisk:
 		var details PlaceDiskActionDetails
@@ -90,7 +96,7 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 		Turn:    c.state.turn,
 		Teams:   c.state.teams,
 		Winners: c.state.winners,
-		MoreData: Connect4SnapshotDetails{
+		MoreData: Connect4SnapshotData{
 			Board: c.state.board.board,
 		},
 		Targets: targets,
@@ -114,7 +120,7 @@ func (c *Connect4) GetBGN() *bgn.Game {
 		case ActionPlaceDisk:
 			var details PlaceDiskActionDetails
 			_ = mapstructure.Decode(action.MoreDetails, &details)
-			bgnAction.Details = details.encode()
+			bgnAction.Details = details.encodeBGN()
 		case bg.ActionSetWinners:
 			var details bg.SetWinnersActionDetails
 			_ = mapstructure.Decode(action.MoreDetails, &details)

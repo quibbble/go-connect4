@@ -12,11 +12,11 @@ var (
 	notationToAction = reverseMap(actionToNotation)
 )
 
-func (p *PlaceDiskActionDetails) encode() []string {
+func (p *PlaceDiskActionDetails) encodeBGN() []string {
 	return []string{strconv.Itoa(p.Column)}
 }
 
-func decodePlaceDiskActionDetails(notation []string) (*PlaceDiskActionDetails, error) {
+func decodePlaceDiskActionDetailsBGN(notation []string) (*PlaceDiskActionDetails, error) {
 	if len(notation) != 1 {
 		return nil, loadFailure(fmt.Errorf("invalid place disk notation"))
 	}

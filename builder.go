@@ -56,7 +56,7 @@ func (b *Builder) Load(game *bgn.Game) (bg.BoardGameWithBGN, error) {
 		var details interface{}
 		switch actionType {
 		case ActionPlaceDisk:
-			result, err := decodePlaceDiskActionDetails(action.Details)
+			result, err := decodePlaceDiskActionDetailsBGN(action.Details)
 			if err != nil {
 				return nil, err
 			}

@@ -40,14 +40,37 @@ func Test_Builder_BGN(t *testing.T) {
 		t.FailNow()
 	}
 
+	err = connect4.Do(&bg.BoardGameAction{
+		Team:       TeamB,
+		ActionType: bg.ActionSetWinners,
+		MoreDetails: bg.SetWinnersActionDetails{
+			Winners: []string{TeamB},
+		},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
+	snapshot, err := connect4.GetSnapshot()
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	game := connect4.GetBGN()
 	connect4Loaded, err := builder.Load(game)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
 	}
+	snapshotLoaded, err := connect4Loaded.GetSnapshot()
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
 
-	expected, _ := json.Marshal(connect4)
-	actual, _ := json.Marshal(connect4Loaded)
-	assert.Equal(t, expected, actual)
+	expected, _ := json.Marshal(snapshot)
+	actual, _ := json.Marshal(snapshotLoaded)
+	assert.Equal(t, string(expected), string(actual))
 }

@@ -24,15 +24,9 @@ func newState(teams []string, random *rand.Rand) *state {
 }
 
 func (s *state) PlaceDisk(team string, column int) error {
-	if len(s.winners) > 0 {
-		return &bgerr.Error{
-			Err:    fmt.Errorf("%s game already completed", key),
-			Status: bgerr.StatusGameOver,
-		}
-	}
 	if team != s.turn {
 		return &bgerr.Error{
-			Err:    fmt.Errorf("currently %s's turn", s.turn),
+			Err:    fmt.Errorf("%s cannot play on %s turn", team, s.turn),
 			Status: bgerr.StatusWrongTurn,
 		}
 	}

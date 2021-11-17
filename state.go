@@ -4,7 +4,6 @@ import (
 	"fmt"
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
-	"math/rand"
 )
 
 type state struct {
@@ -14,9 +13,9 @@ type state struct {
 	board   *board
 }
 
-func newState(teams []string, random *rand.Rand) *state {
+func newState(teams []string) *state {
 	return &state{
-		turn:    teams[random.Intn(len(teams))],
+		turn:    teams[0],
 		teams:   teams,
 		winners: make([]string, 0),
 		board:   newBoard(),

@@ -10,19 +10,7 @@ import (
 func Test_Builder_BGN(t *testing.T) {
 	builder := Builder{}
 	teams := []string{TeamA, TeamB}
-	connect4, err := builder.CreateWithBGN(&bg.BoardGameOptions{Teams: teams, Seed: 123})
-	if err != nil {
-		t.Error(err)
-		t.FailNow()
-	}
-
-	err = connect4.Do(&bg.BoardGameAction{
-		Team:       TeamB,
-		ActionType: ActionPlaceDisk,
-		MoreDetails: PlaceDiskActionDetails{
-			Column: 1,
-		},
-	})
+	connect4, err := builder.CreateWithBGN(&bg.BoardGameOptions{Teams: teams})
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -42,9 +30,21 @@ func Test_Builder_BGN(t *testing.T) {
 
 	err = connect4.Do(&bg.BoardGameAction{
 		Team:       TeamB,
+		ActionType: ActionPlaceDisk,
+		MoreDetails: PlaceDiskActionDetails{
+			Column: 1,
+		},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
+	err = connect4.Do(&bg.BoardGameAction{
+		Team:       TeamA,
 		ActionType: bg.ActionSetWinners,
 		MoreDetails: bg.SetWinnersActionDetails{
-			Winners: []string{TeamB},
+			Winners: []string{TeamA},
 		},
 	})
 	if err != nil {

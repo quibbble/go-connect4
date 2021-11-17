@@ -13,7 +13,6 @@ To play a game create a new Connect4 instance:
 builder := Builder{}
 game, err := builder.Create(&bg.BoardGameOptions{
     Teams: []string{"TeamA", "TeamB"}, // must contain at least 2 and at most 3 teams
-    Seed: 123,                         // seed used to generate deterministic randomness
 })
 ```
 

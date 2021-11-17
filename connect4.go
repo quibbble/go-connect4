@@ -6,7 +6,6 @@ import (
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
 	"github.com/quibbble/go-boardgame/pkg/bgn"
-	"math/rand"
 	"strings"
 )
 
@@ -18,7 +17,6 @@ const (
 type Connect4 struct {
 	state   *state
 	actions []*bg.BoardGameAction
-	seed    int64
 }
 
 func NewConnect4(options *bg.BoardGameOptions) (*Connect4, error) {
@@ -34,9 +32,8 @@ func NewConnect4(options *bg.BoardGameOptions) (*Connect4, error) {
 		}
 	}
 	return &Connect4{
-		state:   newState(options.Teams, rand.New(rand.NewSource(options.Seed))),
+		state:   newState(options.Teams),
 		actions: make([]*bg.BoardGameAction, 0),
-		seed:    options.Seed,
 	}, nil
 }
 
@@ -108,7 +105,6 @@ func (c *Connect4) GetBGN() *bgn.Game {
 	tags := map[string]string{
 		"Game":  key,
 		"Teams": strings.Join(c.state.teams, ", "),
-		"Seed":  fmt.Sprintf("%d", c.seed),
 	}
 	actions := make([]bgn.Action, 0)
 	for _, action := range c.actions {

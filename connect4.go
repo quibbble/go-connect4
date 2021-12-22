@@ -2,11 +2,12 @@ package go_connect4
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/mitchellh/mapstructure"
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
 	"github.com/quibbble/go-boardgame/pkg/bgn"
-	"strings"
 )
 
 const (
@@ -98,6 +99,7 @@ func (c *Connect4) GetSnapshot(team ...string) (*bg.BoardGameSnapshot, error) {
 		},
 		Targets: targets,
 		Actions: c.actions,
+		Message: c.state.message(),
 	}, nil
 }
 

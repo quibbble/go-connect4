@@ -2,6 +2,8 @@ package go_connect4
 
 import (
 	"fmt"
+	"strings"
+
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgerr"
 )
@@ -138,4 +140,15 @@ func (s *state) targets() []*bg.BoardGameAction {
 		}
 	}
 	return targets
+}
+
+func (s *state) message() string {
+	message := fmt.Sprintf("%s must place a disk", s.turn)
+	if len(s.winners) > 0 {
+		message = fmt.Sprintf("%s tie", strings.Join(s.winners, " and "))
+		if len(s.winners) == 1 {
+			message = fmt.Sprintf("%s wins", s.winners[0])
+		}
+	}
+	return message
 }

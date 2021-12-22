@@ -2,9 +2,10 @@ package go_connect4
 
 import (
 	"encoding/json"
+	"testing"
+
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func Test_Builder_BGN(t *testing.T) {

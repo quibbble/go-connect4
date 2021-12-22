@@ -2,9 +2,10 @@ package go_connect4
 
 import (
 	"fmt"
+	"strings"
+
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/quibbble/go-boardgame/pkg/bgn"
-	"strings"
 )
 
 const key = "Connect4"

@@ -1,9 +1,10 @@
 package go_connect4
 
 import (
+	"testing"
+
 	bg "github.com/quibbble/go-boardgame"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 const (

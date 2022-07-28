@@ -31,6 +31,11 @@ func NewConnect4(options *bg.BoardGameOptions) (*Connect4, error) {
 			Err:    fmt.Errorf("at most %d teams allowed to create a game of %s", maxTeams, key),
 			Status: bgerr.StatusTooManyTeams,
 		}
+	} else if duplicates(options.Teams) {
+		return nil, &bgerr.Error{
+			Err:    fmt.Errorf("duplicate teams found"),
+			Status: bgerr.StatusInvalidOption,
+		}
 	}
 	return &Connect4{
 		state:   newState(options.Teams),

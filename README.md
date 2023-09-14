@@ -1,11 +1,10 @@
 # Go-connect4
 
-Go-connect4 is a [Go](https://golang.org) implementation of the board game [Connect4](https://en.wikipedia.org/wiki/Connect_Four). Please note that this repo only includes game logic and a basic API to interact with the game but does NOT include any form of GUI.
+Go-connect4 is a [Go](https://golang.org) implementation of the board game [Connect4](https://en.wikipedia.org/wiki/Connect_Four).
 
-Check out [connect4.quibbble.com](https://connect4.quibbble.com) if you wish to view and play a live version of this game which utilizes this project along with a separate custom UI.
+Check out [connect4.quibbble.com](https://connect4.quibbble.com) to play a live version of this game. This website utilizes [connect4](https://github.com/quibbble/connect4) frontend code, [go-connect4](https://github.com/quibbble/go-connect4) game logic, and [go-quibbble](https://github.com/quibbble/go-quibbble) server logic.
 
-[![Quibbble Connect4](https://i.imgur.com/Oab1Fm7.png)](https://connect4.quibbble.com)
-
+[![Quibbble Connect4](https://raw.githubusercontent.com/quibbble/connect4/main/screenshot.png)](https://connect4.quibbble.com)
 ## Usage
 
 To play a game create a new Connect4 instance:
